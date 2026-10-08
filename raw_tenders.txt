@@ -1,0 +1,4 @@
+﻿CN-2026-001|Bulkley-Nechako|125000.00
+CN-2026-002|Greater Vancouver|450000.00
+CN-2026-003|Northern BC|CORRUPTED_VALUE
+CN-2026-004|Bulkley-Nechako|82000.50
