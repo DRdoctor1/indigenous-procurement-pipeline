@@ -7,7 +7,6 @@ def fetch_government_data(search_query: str, limit: int = 50) -> pl.DataFrame:
     """Fetches live datasets dynamically based on user query and limit."""
     url = "https://open.canada.ca/data/en/api/3/action/package_search"
 
-    # TODO 1: Assign 'search_query' and 'limit' to the dictionary keys below
     params = {"q": search_query, "rows": limit}
 
     headers = {
@@ -17,7 +16,9 @@ def fetch_government_data(search_query: str, limit: int = 50) -> pl.DataFrame:
     }
 
     try:
-        response = requests.get(url, params=params, headers=headers, timeout=10)
+        # Timeout increased to 30s to handle slow government servers
+        print(f"Connecting to Canada Open Data for '{search_query}'...")
+        response = requests.get(url, params=params, headers=headers, timeout=30)
         response.raise_for_status()
         payload = response.json()
     except requests.exceptions.RequestException as e:
@@ -41,27 +42,32 @@ def fetch_government_data(search_query: str, limit: int = 50) -> pl.DataFrame:
             {"id": dataset_id, "department": org_title, "title": str(title).strip()}
         )
 
-    # Convert the list of records to a Polars DataFrame
     return pl.DataFrame(clean_records)
-
-
 # --- EXECUTION HARNESS ---
 
-# Call the function here and store the result in 'df'
-df = fetch_government_data("forestry mining water indigenous", limit=30)
+df = fetch_government_data("indigenous", limit=20)
 
-# ANALYTICAL SQL (DuckDB)
-con = duckdb.connect()
-query = """
-SELECT 
-    department,
-    COUNT(id) AS records_found
-FROM df
-GROUP BY department
-ORDER BY records_found DESC;
-"""
+if not df.is_empty():
+    df.write_parquet("procurement_cache.parquet")
+    print(
+        f"Successfully cached {len(df)} records to procurement_cache.parquet"
+    )
 
-print(f"\n--- SQL RESULTS ---")
-results = con.execute(query).fetchall()
-for row in results:
-    print(f"Count: {row[1]} | Department: {row[0]}")
+    con = duckdb.connect()
+
+    # The SQL query searching specifically for keywords inside the cached data
+    query = """
+    SELECT 
+        department,
+        title
+    FROM 'procurement_cache.parquet'
+    WHERE title ILIKE '%Assessment%' OR title ILIKE '%Recruitment%';
+    """
+
+    print("\n--- SPECIFIC BUSINESS OPPORTUNITY / TOPIC RECORDS ---")
+    results = con.execute(query).fetchall()
+
+    for row in results:
+        print(f"[{row[0]}] -> {row[1]}")
+else:
+    print("Extraction yielded no rows. Parquet file not modified.")
