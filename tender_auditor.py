@@ -112,3 +112,26 @@ for r in results:
     print(f"Closing Date: {closing}")
     print(f"Bid Link    : {url}")
     print("-" * 90)
+
+    # --- STEP 4: AUTOMATED REPORT GENERATION ---
+report_filename = "LATEST_OPPORTUNITIES.txt"
+print(f"\n[4/4] Writing briefing report to {report_filename}...")
+
+with open(report_filename, "w", encoding="utf-8") as rep:
+    rep.write("=" * 80 + "\n")
+    rep.write(
+        "INDIGENOUS OPERATOR PROCUREMENT RADAR (BC & NORTHERN CANADA)\n"
+    )
+    rep.write("Target Sectors: Site Services, Camps, Forestry, Reclamation\n")
+    rep.write(f"Total Matches Identified: {len(results)}\n")
+    rep.write("=" * 80 + "\n\n")
+
+    for r in results:
+        rep.write(f"[{r[0]}]\n")
+        rep.write(f"Title   : {r[1]}\n")
+        rep.write(f"Buyer   : {r[2]}\n")
+        rep.write(f"Closes  : {r[3]}\n")
+        rep.write(f"Bid Link: {r[4]}\n")
+        rep.write("-" * 80 + "\n")
+
+print(f"Report complete. Open '{report_filename}' to review active bids.")
