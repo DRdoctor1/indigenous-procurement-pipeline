@@ -1,0 +1,168 @@
+================================================================================
+INDIGENOUS OPERATOR PROCUREMENT RADAR (BC & NORTHERN CANADA)
+Target Sectors: Site Services, Camps, Forestry, Reclamation
+Total Matches Identified: 27
+================================================================================
+
+[DIRECT_PSIB_MANDATE]
+Title   : Letter of Interest / Advance Notice to Industry Multidisciplinary Environmental Services RFSO 
+Buyer   : Department of Public Works and Government Services (PSPC)
+Closes  : 2026-10-08T13:00:00
+Bid Link: 
+--------------------------------------------------------------------------------
+[GENERAL_COMMERCIAL_LEVERAGE]
+Title   : Communications Coordinator for the Canadian Council of Forest Ministers
+Buyer   : Department of Natural Resources (NRCan)
+Closes  : 2025-08-26T14:00:00
+Bid Link: 
+--------------------------------------------------------------------------------
+[GENERAL_COMMERCIAL_LEVERAGE]
+Title   : Hazardous Waste Disposal Services
+Buyer   : Public Works and Government Services Canada
+Closes  : 2026-09-14T14:00:00
+Bid Link: 
+--------------------------------------------------------------------------------
+[GENERAL_COMMERCIAL_LEVERAGE]
+Title   : South Campus Watermain Replacement
+Buyer   : National Research Council of Canada (NRC)
+Closes  : 2026-10-08T14:00:00
+Bid Link: 
+--------------------------------------------------------------------------------
+[GENERAL_COMMERCIAL_LEVERAGE]
+Title   : W8472-275993 Autonomous Mine Countermeasures (MCM) Uncrewed Surface Vehicle (USV) RFP-D
+Buyer   : Department of Public Works and Government Services (PSPC)
+Closes  : 2026-10-08T14:00:00
+Bid Link: 
+--------------------------------------------------------------------------------
+[GENERAL_COMMERCIAL_LEVERAGE]
+Title   : W8472-275993 Autonomous Mine Countermeasures (MCM) Uncrewed Surface Vehicle (USV) RFP-C
+Buyer   : Department of Public Works and Government Services (PSPC)
+Closes  : 2026-10-08T14:00:00
+Bid Link: 
+--------------------------------------------------------------------------------
+[GENERAL_COMMERCIAL_LEVERAGE]
+Title   : W8472-275993 Autonomous Mine Countermeasures (MCM) Uncrewed Surface Vehicle (USV) RFP-B
+Buyer   : Department of Public Works and Government Services (PSPC)
+Closes  : 2026-10-08T14:00:00
+Bid Link: 
+--------------------------------------------------------------------------------
+[GENERAL_COMMERCIAL_LEVERAGE]
+Title   : W8472-275993 Autonomous Mine Countermeasures (MCM) Uncrewed Surface Vehicle (USV) RFP-A
+Buyer   : Department of Public Works and Government Services (PSPC)
+Closes  : 2026-10-08T14:00:00
+Bid Link: 
+--------------------------------------------------------------------------------
+[GENERAL_COMMERCIAL_LEVERAGE]
+Title   : Electrical Services “As and When” for Pacific Forestry Centre (PFC) - Victoria
+Buyer   : Department of Natural Resources (NRCan)
+Closes  : 2026-10-08T17:00:00
+Bid Link: 
+--------------------------------------------------------------------------------
+[GENERAL_COMMERCIAL_LEVERAGE]
+Title   : RFP01 - Get Cyber Safe Public Awareness Campaign
+Buyer   : Department of Public Works and Government Services (PSPC)
+Closes  : 2026-10-12T14:00:00
+Bid Link: https://portal.us.bn.cloud.ariba.com/dashboard/public/appext/comsapsbncdiscoveryui#/RfxEvent/preview/1110025113?anId=ANONYMOUS
+--------------------------------------------------------------------------------
+[GENERAL_COMMERCIAL_LEVERAGE]
+Title   : E60HL-250020-H - DIESEL FUEL, AUTOMOTIVE GASOLINE, AND HEATING FUEL OIL
+Buyer   : Department of Public Works and Government Services (PSPC)
+Closes  : 2026-10-13T14:00:00
+Bid Link: https://portal.us.bn.cloud.ariba.com/dashboard/public/appext/comsapsbncdiscoveryui#/RfxEvent/preview/1110024746?anId=ANONYMOUS
+--------------------------------------------------------------------------------
+[GENERAL_COMMERCIAL_LEVERAGE]
+Title   : Request for Proposals - 1495 Heron Road - Architectural and Design Services 
+Buyer   : Canada Lands Company Limited (CLC)
+Closes  : 2026-10-14T14:00:00
+Bid Link: 
+--------------------------------------------------------------------------------
+[GENERAL_COMMERCIAL_LEVERAGE]
+Title   : Phase 1 EZ899-270648 Fuel Tank and Dispenser Replacement
+Buyer   : Department of Public Works and Government Services (PSPC)
+Closes  : 2026-10-15T14:00:00
+Bid Link: https://portal.us.bn.cloud.ariba.com/dashboard/public/appext/comsapsbncdiscoveryui#/RfxEvent/preview/1110026801?anId=ANONYMOUS
+--------------------------------------------------------------------------------
+[GENERAL_COMMERCIAL_LEVERAGE]
+Title   : Dental Chairs and Accessories for Multiple Sites in Ontario region
+Buyer   : Correctional Service of Canada (CSC)
+Closes  : 2026-10-16T14:00:00
+Bid Link: 
+--------------------------------------------------------------------------------
+[GENERAL_COMMERCIAL_LEVERAGE]
+Title   : Waste Removal and Recycling Services
+Buyer   : National Research Council of Canada (NRC)
+Closes  : 2026-10-16T14:00:00
+Bid Link: 
+--------------------------------------------------------------------------------
+[GENERAL_COMMERCIAL_LEVERAGE]
+Title   : Sustainable Northern Operations: Water & Waste
+Buyer   : Department of Public Works and Government Services (PSPC)
+Closes  : 2026-10-20T14:00:00
+Bid Link: 
+--------------------------------------------------------------------------------
+[GENERAL_COMMERCIAL_LEVERAGE]
+Title   : Float Camp Rehabilitation, Gwaii Haanas National Marine Conservation Area
+Buyer   : Parks Canada Agency (PC)
+Closes  : 2026-10-20T16:00:00
+Bid Link: 
+--------------------------------------------------------------------------------
+[GENERAL_COMMERCIAL_LEVERAGE]
+Title   : Subscription to metal and minerals economic data.
+Buyer   : Department of Natural Resources (NRCan)
+Closes  : 2026-10-21T14:00:00
+Bid Link: 
+--------------------------------------------------------------------------------
+[GENERAL_COMMERCIAL_LEVERAGE]
+Title   : MINERVA Initiative – Uncrewed Aircraft System Deconfliction
+Buyer   : Department of Public Works and Government Services (PSPC)
+Closes  : 2026-10-21T14:00:00
+Bid Link: 
+--------------------------------------------------------------------------------
+[GENERAL_COMMERCIAL_LEVERAGE]
+Title   : Cabot Tower Signal Mast Replacement, Signal Hill National Historic Site
+Buyer   : Parks Canada Agency (PC)
+Closes  : 2026-10-22T12:30:00
+Bid Link: 
+--------------------------------------------------------------------------------
+[GENERAL_COMMERCIAL_LEVERAGE]
+Title   : Forest Management at Valcartier and Farnham, Québec
+Buyer   : Department of Natural Resources (NRCan)
+Closes  : 2026-10-22T14:00:00
+Bid Link: 
+--------------------------------------------------------------------------------
+[GENERAL_COMMERCIAL_LEVERAGE]
+Title   : Stage 2 - Sidney Operations Centre Marine Fuel & Docks Replacement, Gulf Islands National Park Reserve
+Buyer   : Parks Canada Agency (PC)
+Closes  : 2026-10-22T16:00:00
+Bid Link: 
+--------------------------------------------------------------------------------
+[GENERAL_COMMERCIAL_LEVERAGE]
+Title   : Lead Hazardous Waste Removal for RCMP Indoor Firing Ranges (IFR), Alberta
+Buyer   : Royal Canadian Mounted Police (RCMP)
+Closes  : 2026-10-22T16:00:00
+Bid Link: 
+--------------------------------------------------------------------------------
+[GENERAL_COMMERCIAL_LEVERAGE]
+Title   : Stage 2 -Amishku-Shipiss-Kigiap Konga - Beaver Brook Camp-Akami−Uapishkᵘ−KakKasuak−Mealy Mountains National Park Reserve
+Buyer   : Parks Canada Agency (PC)
+Closes  : 2026-10-29T12:30:00
+Bid Link: 
+--------------------------------------------------------------------------------
+[GENERAL_COMMERCIAL_LEVERAGE]
+Title   : Analysis of Wastewater, Sludge/Biosolids, Leachate and Other Complex Environmental Matrices for Metformin and Guanylurea to Environment and Climate Change Canada
+Buyer   : Department of the Environment (ECCC )
+Closes  : 2026-10-30T14:00:00
+Bid Link: 
+--------------------------------------------------------------------------------
+[GENERAL_COMMERCIAL_LEVERAGE]
+Title   : RFI W8476226540A Deployable Camp Infrastructure and Utilities Systems (Camp Sustain)
+Buyer   : Department of Public Works and Government Services (PSPC)
+Closes  : 2026-12-31T14:00:00
+Bid Link: https://discovery.ariba.com/rfx/23624522?extsite=MjM2MjQ1MjJfQU4wMTQ4NDA1MDk5Mg==
+--------------------------------------------------------------------------------
+[GENERAL_COMMERCIAL_LEVERAGE]
+Title   : EW479-162880-D - Hazardous Waste Disposal Services
+Buyer   : Department of Public Works and Government Services (PSPC)
+Closes  : 2027-08-02T13:00:00
+Bid Link: https://portal.us.bn.cloud.ariba.com/dashboard/public/appext/comsapsbncdiscoveryui#/RfxEvent/preview/18979717?anId=ANONYMOUS
+--------------------------------------------------------------------------------

@@ -41,46 +41,60 @@ except Exception as e:
     print(f"Parquet conversion failed: {e}")
     exit(1)
 
-# Step 3: Generate Prime Contractor Partnership Leads
 print(
-    "[3/3] Generating Lead Sheet of Out-of-Province Prime Contractors winning in BC...\n"
+    "[3/3] Auditing historical awards strictly within Northern BC / Hwy 16 Corridor...\n"
 )
 con = duckdb.connect()
 
 query = f"""
 SELECT 
-    "supplierLegalName-nomLegalFournisseur-eng" AS prime_contractor,
-    "supplierAddressProvince-fournisseurAdresseProvince-eng" AS headquarter_province,
-    COUNT(*) AS contracts_won_in_bc,
-    ROUND(SUM("totalContractValue-valeurTotaleContrat"), 2) AS total_bc_revenue,
-    STRING_AGG("title-titre-eng", ' | ') AS project_titles
+    "title-titre-eng" AS title,
+    "totalContractValue-valeurTotaleContrat" AS value,
+    "supplierLegalName-nomLegalFournisseur-eng" AS winner,
+    "supplierAddressCity-fournisseurAdresseVille-eng" AS winner_city,
+    "supplierAddressProvince-fournisseurAdresseProvince-eng" AS winner_province,
+    "contractingEntityName-nomEntitContractante-eng" AS buyer,
+    "contractAwardDate-dateAttributionContrat" AS award_date
 FROM '{LOCAL_PARQUET}'
 WHERE 
+    -- 1. Scan delivery text, titles, or descriptions for your home territory
     (
-        "regionsOfDelivery-regionsLivraison-eng" ILIKE '%British Columbia%' 
-        OR "regionsOfDelivery-regionsLivraison-eng" ILIKE '%BC%'
+        "regionsOfDelivery-regionsLivraison-eng" ILIKE '%Burns Lake%'
+        OR "regionsOfDelivery-regionsLivraison-eng" ILIKE '%Smithers%'
+        OR "regionsOfDelivery-regionsLivraison-eng" ILIKE '%Prince George%'
+        OR "regionsOfDelivery-regionsLivraison-eng" ILIKE '%Vanderhoof%'
+        OR "regionsOfDelivery-regionsLivraison-eng" ILIKE '%Houston%'
+        OR "regionsOfDelivery-regionsLivraison-eng" ILIKE '%Babine%'
+        OR "title-titre-eng" ILIKE '%Burns Lake%'
+        OR "title-titre-eng" ILIKE '%Smithers%'
+        OR "title-titre-eng" ILIKE '%Prince George%'
+        OR "title-titre-eng" ILIKE '%Vanderhoof%'
+        OR "title-titre-eng" ILIKE '%Houston%'
+        OR "title-titre-eng" ILIKE '%Babine%'
+        OR "tenderDescription-descriptionAppelOffres-eng" ILIKE '%Burns Lake%'
+        OR "tenderDescription-descriptionAppelOffres-eng" ILIKE '%Smithers%'
+        OR "tenderDescription-descriptionAppelOffres-eng" ILIKE '%Prince George%'
     )
-    AND "supplierAddressProvince-fournisseurAdresseProvince-eng" NOT ILIKE '%British Columbia%'
-    AND "supplierAddressProvince-fournisseurAdresseProvince-eng" IS NOT NULL
-    AND "totalContractValue-valeurTotaleContrat" > 20000
-GROUP BY prime_contractor, headquarter_province
-ORDER BY total_bc_revenue DESC;
+ORDER BY value DESC;
 """
 
-df_leads = con.execute(query).fetch_df()
+local_matches = con.execute(query).fetch_df()
 
-print("=" * 110)
-print(f" PRIME CONTRACTORS FOR INDIGENOUS PARTNERSHIPS ({len(df_leads)} Found)")
-print("=" * 110)
-
-for idx, r in df_leads.iterrows():
-    print(f"\nPRIME:   {r['prime_contractor']} (HQ: {r['headquarter_province']})")
-    print(f"REVENUE: ${r['total_bc_revenue']:,.2f} across {r['contracts_won_in_bc']} project(s)")
-    print(f"SCOPES:  {r['project_titles'][:120]}...")
-    print("-" * 110)
-
-# Save the lead sheet to CSV
-df_leads.to_csv("PRIME_CONTRACTOR_LEAD_SHEET.csv", index=False)
+print("=" * 100)
 print(
-    "\nSaved full lead list to 'PRIME_CONTRACTOR_LEAD_SHEET.csv' in your project folder."
+    f" HYPER-LOCAL NORTHERN BC / HWY 16 OPPORTUNITIES ({len(local_matches)} Found)"
 )
+print("=" * 100)
+
+if not local_matches.empty:
+    for idx, r in local_matches.iterrows():
+        print(f"${r['value']:,.2f} | {r['title'][:70]}")
+        print(
+            f"   Winner: {r['winner']} ({r['winner_city']}, {r['winner_province']})"
+        )
+        print(f"   Buyer:  {r['buyer']} | Date: {r['award_date']}")
+        print("-" * 100)
+else:
+    print(
+        "Zero direct federal procurement awards tagged explicitly with local town names in this period."
+    )
