@@ -41,50 +41,46 @@ except Exception as e:
     print(f"Parquet conversion failed: {e}")
     exit(1)
 
-# Step 3: Find accessible, winnable contract sizes won by out-of-province vendors
+# Step 3: Generate Prime Contractor Partnership Leads
 print(
-    "[3/3] Isolating entry-level site service contracts (< $500k) won by outsiders...\n"
+    "[3/3] Generating Lead Sheet of Out-of-Province Prime Contractors winning in BC...\n"
 )
 con = duckdb.connect()
 
 query = f"""
 SELECT 
-    "title-titre-eng" AS title,
-    "totalContractValue-valeurTotaleContrat" AS value,
-    "supplierLegalName-nomLegalFournisseur-eng" AS winner,
-    "supplierAddressProvince-fournisseurAdresseProvince-eng" AS winner_location,
-    "contractAwardDate-dateAttributionContrat" AS award_date
+    "supplierLegalName-nomLegalFournisseur-eng" AS prime_contractor,
+    "supplierAddressProvince-fournisseurAdresseProvince-eng" AS headquarter_province,
+    COUNT(*) AS contracts_won_in_bc,
+    ROUND(SUM("totalContractValue-valeurTotaleContrat"), 2) AS total_bc_revenue,
+    STRING_AGG("title-titre-eng", ' | ') AS project_titles
 FROM '{LOCAL_PARQUET}'
 WHERE 
     (
         "regionsOfDelivery-regionsLivraison-eng" ILIKE '%British Columbia%' 
         OR "regionsOfDelivery-regionsLivraison-eng" ILIKE '%BC%'
     )
-    AND (
-        "title-titre-eng" ILIKE '%forest%'
-        OR "title-titre-eng" ILIKE '%tree%'
-        OR "title-titre-eng" ILIKE '%clearing%'
-        OR "title-titre-eng" ILIKE '%site%'
-        OR "title-titre-eng" ILIKE '%camp%'
-        OR "title-titre-eng" ILIKE '%environ%'
-        OR "title-titre-eng" ILIKE '%waste%'
-        OR "title-titre-eng" ILIKE '%fuel%'
-        OR "title-titre-eng" ILIKE '%water%'
-        OR "title-titre-eng" ILIKE '%sampling%'
-        OR "title-titre-eng" ILIKE '%inspect%'
-    )
-    -- Sole-proprietorship target range: Under $500,000
-    AND "totalContractValue-valeurTotaleContrat" BETWEEN 15000 AND 500000
-ORDER BY value DESC;
+    AND "supplierAddressProvince-fournisseurAdresseProvince-eng" NOT ILIKE '%British Columbia%'
+    AND "supplierAddressProvince-fournisseurAdresseProvince-eng" IS NOT NULL
+    AND "totalContractValue-valeurTotaleContrat" > 20000
+GROUP BY prime_contractor, headquarter_province
+ORDER BY total_bc_revenue DESC;
 """
 
-df_matches = con.execute(query).fetch_df()
+df_leads = con.execute(query).fetch_df()
 
 print("=" * 110)
-print(f" ACCESSIBLE ENTRY-LEVEL OPPORTUNITIES ({len(df_matches)} Found)")
+print(f" PRIME CONTRACTORS FOR INDIGENOUS PARTNERSHIPS ({len(df_leads)} Found)")
 print("=" * 110)
 
-for idx, r in df_matches.iterrows():
-    print(f"${r['value']:,.2f} | {r['title'][:70]}")
-    print(f"   Winner: {r['winner']} ({r['winner_location']}) | Date: {r['award_date']}")
+for idx, r in df_leads.iterrows():
+    print(f"\nPRIME:   {r['prime_contractor']} (HQ: {r['headquarter_province']})")
+    print(f"REVENUE: ${r['total_bc_revenue']:,.2f} across {r['contracts_won_in_bc']} project(s)")
+    print(f"SCOPES:  {r['project_titles'][:120]}...")
     print("-" * 110)
+
+# Save the lead sheet to CSV
+df_leads.to_csv("PRIME_CONTRACTOR_LEAD_SHEET.csv", index=False)
+print(
+    "\nSaved full lead list to 'PRIME_CONTRACTOR_LEAD_SHEET.csv' in your project folder."
+)
