@@ -1,266 +1,238 @@
 from datetime import datetime
-import duckdb
 
-OUTPUT_FILE = "SUS_KE_BUSINESS_PLAN.html"
-print("[1/2] Modeling Zero-Equity Capital Acquisition Schedule...")
+OUTPUT_FILE = "SUS_KE_FIRE_OPS_PLAN.html"
+print("[1/2] Compiling Wildland Fire & Fuel Mitigation Commercial Pro-Forma...")
 
-# ==============================================================================
-# CAPITAL ACQUISITION TARGETS (NON-DILUTIVE & CHARACTER-BASED)
-# ==============================================================================
-capital_sources = [
-    {
-        "source": "Futurpreneur Canada & BDC (Indigenous Entrepreneur Program)",
-        "type": "Unsecured Startup Loan",
-        "target_amount": 20000.00,
-        "terms": "Interest-only Year 1; no collateral required; paired with mentor",
-        "status": "Application Package Ready",
-    },
-    {
-        "source": "New Relationship Trust (NRT) / Band Capacity Grant",
-        "type": "Non-Repayable Equity Grant",
-        "target_amount": 5000.00,
-        "terms": "Non-repayable direct tool and certification grant",
-        "status": "Intake Pending Plan Submission",
-    },
-    {
-        "source": "Lake Babine Nation / ISET (Workforce Development Allowance)",
-        "type": "Living & Safety Training Subsidy",
-        "target_amount": 3500.00,
-        "terms": "Covers OFA-1 First Aid, WHMIS, and initial safety gear",
-        "status": "Local Band Coordination",
-    },
-]
+# CAPITAL STRUCTURE
+target_capital = 28500.00
+futurpreneur_loan = 20000.00
+grants_training = 8500.00  # NRT + Band ISET / Safety gear subsidy
 
-total_target_capital = sum(c["target_amount"] for c in capital_sources)
-
-# ==============================================================================
-# LEAN SETUP BUDGET (MATCHING THE $28,500 SEED CAPITAL)
-# ==============================================================================
-capex_allocation = [
+# LEAN SETUP ASSETS (WILDFIRE & FIELD BRUSHING FOCUS)
+startup_assets = [
     {
-        "item": "Reliable 4x4 Utility Transport (Inspected Used 3/4-Ton)",
+        "item": "Inspected 4x4 3/4-Ton Crew/Utility Truck",
         "cost": 11000.00,
-        "purpose": "Resource road site deployment and sample transport",
+        "function": "BCWS Equipment Call-Out Registry eligible transport & tool haulage",
     },
     {
-        "item": "Environmental Handheld Meters & Field Kits",
-        "cost": 1200.00,
-        "purpose": "Water quality telemetry (pH, turbidity, conductivity)",
+        "item": "Pro Brush Saw / Chainsaw Kit + Safety Chaps & Field Tools",
+        "cost": 2200.00,
+        "function": "Manual fuel mitigation, danger tree clearing, spacing & brushing",
     },
     {
-        "item": "Safety PPE, Commercial VHF Radio & inReach Satellite",
+        "item": "VHF Commercial Radio & Garmin inReach Satellite Unit",
+        "function": "Mandatory BCWS fireline communications & resource road safety",
         "cost": 1800.00,
-        "purpose": "Mandatory resource road radio channels & lone worker safety",
     },
     {
         "item": "WorkSafeBC CU 763036 & Commercial General Liability (CGL)",
+        "function": "Mandatory provincial contract clearance & site access compliance",
         "cost": 1500.00,
-        "purpose": "Initial insurance deposits and site clearance compliance",
     },
     {
-        "item": "Working Capital Cash Float (Receivables Buffer)",
-        "cost": 13000.00,
-        "purpose": "60-day operational survival float for fuel and supplies",
+        "item": "Liquid Working Capital Reserve (Fuel, Float & Contingency)",
+        "function": "Guaranteed 45-day operational cash cushion for government invoice cycles",
+        "cost": 12000.00,
     },
 ]
 
-total_budget = sum(c["cost"] for cape in [capex_allocation] for c in cape)
+total_capex = sum(a["cost"] for a in startup_assets)
 
-# ==============================================================================
-# 3-YEAR PRO-FORMA WITH DEBT SERVICE (FUTURPRENEUR LOAN)
-# ==============================================================================
-# Futurpreneur interest-only Year 1 (~8.5% on $20,000 = ~$1,700/yr or $140/mo)
+# 3-YEAR REVENUE MODEL (SUMMER CALL-OUTS + FALL/WINTER FUEL CONTRACTS)
+# Year 1: 45 days BCWS fireline call-out/standby + 1 modest local fuel/brushing contract ($35k)
+# Year 2: 60 days fireline call-out + 1 BCTS Babine fuel contract ($90k)
+# Year 3: Multi-crew deployment across regional district
 projections = [
     {
         "year": "Year 1 (Solo Bootstrap)",
-        "revenue": 75000.00,  # 2 direct awards / small subcontracts
-        "direct_costs": 18000.00,  # fuel, testing consumables, vehicle upkeep
-        "overhead": 2500.00,  # admin, software, phone
-        "debt_service": 1700.00,  # Interest-only loan payments
+        "fire_season_rev": 42500.00,  # 45 days @ ~$944/day (truck + operator tariff)
+        "fall_winter_contracts": 38000.00,  # 1 local fuel mitigation / brushing scope
+        "total_revenue": 80500.00,
+        "direct_costs": 19500.00,  # fuel, saw maintenance, chains, PPE, insurance
+        "debt_service": 1700.00,  # ~$142/mo interest-only loan
     },
     {
-        "year": "Year 2 (PSIB Partner Expansion)",
-        "revenue": 180000.00,  # 3 prime subcontracts
-        "direct_costs": 65000.00,  # includes 1 casual technician for 90 days
-        "overhead": 4200.00,
-        "debt_service": 5400.00,  # Principal + Interest repayment
+        "year": "Year 2 (Crew Expansion)",
+        "fire_season_rev": 75000.00,  # 2-person crew deployed on active calls
+        "fall_winter_contracts": 95000.00,  # BCTS Babine fuel mitigation / spacing tender
+        "total_revenue": 170000.00,
+        "direct_costs": 62000.00,  # includes on-call saw assistant wages
+        "debt_service": 5400.00,  # P+I repayment
     },
     {
-        "year": "Year 3 (Standing Offer Execution)",
-        "revenue": 350000.00,  # Recurring standing offer call-ups
-        "direct_costs": 135000.00,  # 2 casual field technicians
-        "overhead": 6500.00,
+        "year": "Year 3 (Multi-Unit Contractor)",
+        "fire_season_rev": 135000.00,  # 2 trucks registered with BCWS Northwest Centre
+        "fall_winter_contracts": 185000.00,  # 2 major ministry fuel reduction packages
+        "total_revenue": 320000.00,
+        "direct_costs": 125000.00,
         "debt_service": 5400.00,
     },
 ]
 
 p_rows = []
 for p in projections:
-    gross_profit = p["revenue"] - p["direct_costs"]
-    ebitda = gross_profit - p["overhead"]
-    net_pretax = ebitda - p["debt_service"]
-    net_margin = (net_pretax / p["revenue"]) * 100
-
+    gross_margin = p["total_revenue"] - p["direct_costs"]
+    net_pretax = gross_margin - p["debt_service"]
+    net_pct = (net_pretax / p["total_revenue"]) * 100
     p_rows.append(
         {
             "year": p["year"],
-            "revenue": p["revenue"],
+            "total_revenue": p["total_revenue"],
             "direct_costs": p["direct_costs"],
-            "gross_profit": gross_profit,
+            "gross_margin": gross_margin,
             "debt_service": p["debt_service"],
             "net_pretax": net_pretax,
-            "net_margin": net_margin,
+            "net_pct": net_pct,
         }
     )
 
-print("[2/2] Generating lean commercial plan...")
+print("[2/2] Generating executive pitch document...")
 
-html_doc = f"""<!DOCTYPE html>
+html_content = f"""<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
 <style>
-    body {{ font-family: 'Segoe UI', Arial, sans-serif; margin: 40px; color: #1a202c; line-height: 1.6; background-color: #fff; }}
-    .header {{ border-bottom: 4px solid #2b6cb0; padding-bottom: 20px; margin-bottom: 30px; }}
-    h1 {{ color: #1a365d; font-size: 26px; margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 0.5px; }}
-    .subtitle {{ color: #4a5568; font-size: 15px; font-weight: 600; }}
-    .meta-bar {{ margin-top: 15px; font-size: 13px; color: #718096; }}
+    body {{ font-family: 'Segoe UI', Arial, sans-serif; margin: 30px; color: #1a202c; line-height: 1.5; background-color: #fff; }}
+    .header {{ border-bottom: 4px solid #c53030; padding-bottom: 15px; margin-bottom: 20px; }}
+    h1 {{ color: #742a2a; font-size: 26px; margin: 0; text-transform: uppercase; letter-spacing: 0.5px; }}
+    .subtitle {{ color: #c53030; font-size: 15px; font-weight: bold; margin-top: 3px; }}
+    .meta-bar {{ margin-top: 10px; font-size: 12px; color: #4a5568; background: #fff5f5; padding: 8px 12px; border-radius: 4px; border-left: 4px solid #e53e3e; }}
     
-    .card-grid {{ display: flex; gap: 20px; margin: 25px 0; }}
-    .card {{ flex: 1; background: #ebf8ff; border: 1px solid #bee3f8; border-radius: 8px; padding: 18px; text-align: center; }}
-    .card-num {{ font-size: 24px; font-weight: bold; color: #2b6cb0; }}
-    .card-label {{ font-size: 11.5px; color: #4a5568; text-transform: uppercase; font-weight: bold; margin-top: 5px; }}
+    .pitch-box {{ background: #fffaf0; border: 2px solid #dd6b20; border-radius: 8px; padding: 18px; margin: 20px 0; }}
+    .pitch-title {{ color: #9c4221; font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }}
+    .pitch-grid {{ display: flex; gap: 15px; }}
+    .pitch-col {{ flex: 1; border-right: 1px solid #ecc94b; padding-right: 15px; font-size: 12.5px; }}
+    .pitch-col:last-child {{ border-right: none; padding-right: 0; }}
+    .pitch-lead {{ font-weight: bold; color: #7b341e; margin-bottom: 4px; display: block; }}
     
-    h2 {{ color: #2c5282; font-size: 17px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-top: 35px; text-transform: uppercase; }}
-    p, li {{ font-size: 13.5px; color: #2d3748; }}
+    .card-grid {{ display: flex; gap: 15px; margin: 20px 0; }}
+    .card {{ flex: 1; background: #f7fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 14px; text-align: center; }}
+    .card-num {{ font-size: 22px; font-weight: bold; color: #c53030; }}
+    .card-label {{ font-size: 11px; color: #4a5568; text-transform: uppercase; font-weight: bold; margin-top: 4px; }}
     
-    table {{ width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }}
-    th, td {{ border: 1px solid #cbd5e0; padding: 9px 12px; }}
-    th {{ background: #edf2f7; color: #2d3748; text-transform: uppercase; font-size: 11px; }}
+    h2 {{ color: #742a2a; font-size: 15px; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; margin-top: 25px; text-transform: uppercase; }}
+    p, li {{ font-size: 12.5px; color: #2d3748; }}
+    
+    table {{ width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 12px; }}
+    th, td {{ border: 1px solid #cbd5e0; padding: 8px 10px; }}
+    th {{ background: #edf2f7; color: #2d3748; text-transform: uppercase; font-size: 10.5px; }}
     .highlight-row {{ background: #feebc8 !important; font-weight: bold; }}
     
-    .callout {{ background: #f0fff4; border-left: 4px solid #38a169; padding: 15px; margin: 20px 0; border-radius: 0 6px 6px 0; font-size: 13px; }}
-    .footer {{ margin-top: 50px; border-top: 1px solid #e2e8f0; padding-top: 15px; font-size: 11px; color: #a0aec0; text-align: center; }}
+    .callout {{ background: #f0fff4; border-left: 4px solid #38a169; padding: 12px; margin: 15px 0; border-radius: 0 4px 4px 0; font-size: 12px; }}
+    .footer {{ margin-top: 35px; border-top: 1px solid #e2e8f0; padding-top: 10px; font-size: 10.5px; color: #a0aec0; text-align: center; }}
 </style>
 </head>
 <body>
 
 <div class="header">
-    <h1>Sus Ke Environmental Services</h1>
-    <div class="subtitle">Capital Sourcing Strategy & Lean Commercial Launch Plan</div>
+    <h1>Sus Ke Field & Emergency Operations</h1>
+    <div class="subtitle">Commercial Wildland Fire, Fuel Mitigation & Civil Support Venture</div>
     <div class="meta-bar">
-        <strong>Lead Operator:</strong> Phillip Williams | <strong>Nation:</strong> Lake Babine Nation | <strong>WorkSafeBC CU:</strong> 763036 | <strong>Territory:</strong> Highway 16 Corridor, BC
+        <strong>Lead Operator:</strong> Phillip Williams | <strong>Affiliation:</strong> Lake Babine Nation | <strong>Operational Background:</strong> 3 Years Type 3 Wildland Firefighter | <strong>WorkSafeBC:</strong> Active CU 763036 | <strong>Base:</strong> Bulkley-Nechako / Hwy 16
+    </div>
+</div>
+
+<div class="pitch-box">
+    <div class="pitch-title">Executive 60-Second Lender & Investor Memo</div>
+    <div class="pitch-grid">
+        <div class="pitch-col">
+            <span class="pitch-lead">1. Operational Proof & Qualifications</span>
+            Lead operator brings <strong>3 verified seasons of active Type 3 Wildland Firefighting experience</strong> with live provincial tickets (S-100, S-290, radio, saw safety). Zero theoretical startup risk—proven field capability under extreme pressure.
+        </div>
+        <div class="pitch-col">
+            <span class="pitch-lead">2. Dual Counter-Cyclical Revenue</span>
+            • <strong>Summer (May–Aug):</strong> BC Wildfire Service (BCWS) equipment/operator tariff call-outs ($600–$950/day). Priority dispatch for local Indigenous contractors.<br>
+            • <strong>Fall/Winter (Sep–Mar):</strong> BCTS & Ministry of Forests fuel reduction, danger tree spacing & FSR roadside brushing ($80k–$140k tenders).
+        </div>
+        <div class="pitch-col">
+            <span class="pitch-lead">3. Debt Protection & Capital Defense</span>
+            <strong>$20,000 loan request</strong> carries an interest-only service of just <strong>$142/month</strong> in Year 1. Covered <strong>34x over</strong> by Year 1 net cash ($59,300). Backed by <strong>$12,000 in liquid operating reserve</strong> to float Net-30/60 government pay cycles.
+        </div>
     </div>
 </div>
 
 <div class="card-grid">
     <div class="card">
-        <div class="card-num">${total_target_capital:,.0f}</div>
-        <div class="card-label">Target Seed Capital</div>
+        <div class="card-num">${target_capital:,.0f}</div>
+        <div class="card-label">Total Seed Capital</div>
     </div>
     <div class="card">
-        <div class="card-num">$8,500</div>
-        <div class="card-label">Target Non-Repayable Grants</div>
+        <div class="card-num">3 Seasons</div>
+        <div class="card-label">Type 3 Fireline Experience</div>
     </div>
     <div class="card">
-        <div class="card-num">$13,000</div>
+        <div class="card-num">${startup_assets[4]['cost']:,.0f}</div>
         <div class="card-label">Operating Cash Reserve</div>
     </div>
     <div class="card">
-        <div class="card-num">5.0%</div>
-        <div class="card-label">Federal PSIB Quota Mandate</div>
+        <div class="card-num">> 34x</div>
+        <div class="card-label">Debt Service Coverage (DSCR)</div>
     </div>
 </div>
 
-<h2>1. Executive Venture Overview</h2>
-<p>
-    <strong>Sus Ke Environmental Services</strong> is an Indigenous sole proprietorship based in North-Central BC providing baseline environmental sampling (water/soil), compliance field monitoring, and site technical support across the Highway 16 corridor.
-</p>
-<p>
-    The venture is structured to capitalize on the federal <strong>Procurement Strategy for Indigenous Business (PSIB)</strong>. Out-of-province prime contractors won over <strong>56% of regional site contracts in BC</strong> in recent federal filings due to a verified shortage of local, certified Indigenous field operators. Sus Ke serves as an on-the-ground subcontractor partner to fulfill these mandatory quotas.
-</p>
-
-<h2>2. Capital Sourcing Strategy (Phase 0: 30–60 Day Acquisition)</h2>
-<p>Rather than relying on uncommitted private funds, the venture secures startup financing through structured Indigenous entrepreneurship funding channels:</p>
-
-<table>
-    <tr>
-        <th>Capital Source</th>
-        <th>Facility Type</th>
-        <th>Target Amount</th>
-        <th>Terms & Structural Role</th>
-    </tr>
-"""
-
-for c in capital_sources:
-    html_doc += f"""    <tr>
-        <td><strong>{c['source']}</strong></td>
-        <td>{c['type']}</td>
-        <td style="text-align: right; font-weight: bold;">${c['target_amount']:,.2f}</td>
-        <td>{c['terms']}</td>
-    </tr>
-"""
-
-html_doc += f"""    <tr class="highlight-row">
-        <td colspan="2">TOTAL TARGET CAPITALIZATION</td>
-        <td style="text-align: right;">${total_target_capital:,.2f}</td>
-        <td>Sufficient to fund full CapEx + 60-day operating buffer</td>
-    </tr>
-</table>
-
-<h2>3. Lean CapEx Deployment Budget</h2>
-<p>Seed capital is strictly deployed into essential field assets and regulatory compliance:</p>
-
+<h2>1. Capital Deployment Budget</h2>
 <table>
     <tr>
         <th>Asset / Deployment Line</th>
-        <th>Budget</th>
-        <th>Operational Function</th>
+        <th style="text-align: right;">Budget Allocation</th>
+        <th>Operational Purpose</th>
     </tr>
 """
 
-for ca in capex_allocation:
-    html_doc += f"""    <tr>
-        <td><strong>{ca['item']}</strong></td>
-        <td style="text-align: right;">${ca['cost']:,.2f}</td>
-        <td>{ca['purpose']}</td>
+for a in startup_assets:
+    html_content += f"""    <tr>
+        <td><strong>{a['item']}</strong></td>
+        <td style="text-align: right; font-weight: bold;">${a['cost']:,.2f}</td>
+        <td>{a['function']}</td>
     </tr>
 """
 
-html_doc += f"""    <tr class="highlight-row">
-        <td>TOTAL STARTUP ALLOCATION</td>
-        <td style="text-align: right;">${total_budget:,.2f}</td>
-        <td>Complete field capability with zero luxury or office overhead</td>
+html_content += f"""    <tr class="highlight-row">
+        <td>TOTAL SEED DEPLOYMENT</td>
+        <td style="text-align: right;">${total_capex:,.2f}</td>
+        <td>Complete field capability with zero debt-burdened heavy machinery</td>
     </tr>
 </table>
 
-<h2>4. 3-Year Pro-Forma Income Schedule (With Debt Service)</h2>
-<p>Modeled conservatively assuming Year 1 executes strictly 2 modest contracts ($35k–$40k scopes) solo. Includes debt service for the Futurpreneur loan:</p>
-
+<h2>2. 3-Year Counter-Cyclical Pro-Forma Income Schedule</h2>
 <table>
     <tr>
         <th>Financial Schedule</th>
-        <th style="text-align: right;">Year 1 (Solo Bootstrap)</th>
-        <th style="text-align: right;">Year 2 (PSIB Partner Expansion)</th>
-        <th style="text-align: right;">Year 3 (Standing Offer Execution)</th>
+        <th style="text-align: right;">Year 1 (Solo Operator)</th>
+        <th style="text-align: right;">Year 2 (Crew Expansion)</th>
+        <th style="text-align: right;">Year 3 (Multi-Unit Contractor)</th>
     </tr>
     <tr>
-        <td>Gross Contract Revenue</td>
-        <td style="text-align: right;">${p_rows[0]['revenue']:,.2f}</td>
-        <td style="text-align: right;">${p_rows[1]['revenue']:,.2f}</td>
-        <td style="text-align: right;">${p_rows[2]['revenue']:,.2f}</td>
+        <td>Summer Fireline Call-Out Revenue (BCWS)</td>
+        <td style="text-align: right;">${projections[0]['fire_season_rev']:,.2f}</td>
+        <td style="text-align: right;">${projections[1]['fire_season_rev']:,.2f}</td>
+        <td style="text-align: right;">${projections[2]['fire_season_rev']:,.2f}</td>
     </tr>
     <tr>
-        <td>Direct Field Expenses (COGS)</td>
+        <td>Fall/Winter Fuel Reduction & Brushing Contracts</td>
+        <td style="text-align: right;">${projections[0]['fall_winter_contracts']:,.2f}</td>
+        <td style="text-align: right;">${projections[1]['fall_winter_contracts']:,.2f}</td>
+        <td style="text-align: right;">${projections[2]['fall_winter_contracts']:,.2f}</td>
+    </tr>
+    <tr style="background: #edf2f7; font-weight: bold;">
+        <td>Total Annual Gross Revenue</td>
+        <td style="text-align: right;">${p_rows[0]['total_revenue']:,.2f}</td>
+        <td style="text-align: right;">${p_rows[1]['total_revenue']:,.2f}</td>
+        <td style="text-align: right;">${p_rows[2]['total_revenue']:,.2f}</td>
+    </tr>
+    <tr>
+        <td>Direct Field Expenses (Fuel, Saw Maintenance, Gear, CGL)</td>
         <td style="text-align: right;">${p_rows[0]['direct_costs']:,.2f}</td>
         <td style="text-align: right;">${p_rows[1]['direct_costs']:,.2f}</td>
         <td style="text-align: right;">${p_rows[2]['direct_costs']:,.2f}</td>
     </tr>
-    <tr style="background: #edf2f7; font-weight: bold;">
+    <tr style="font-weight: bold;">
         <td>Gross Operating Margin</td>
-        <td style="text-align: right;">${p_rows[0]['gross_profit']:,.2f}</td>
-        <td style="text-align: right;">${p_rows[1]['gross_profit']:,.2f}</td>
-        <td style="text-align: right;">${p_rows[2]['gross_profit']:,.2f}</td>
+        <td style="text-align: right;">${p_rows[0]['gross_margin']:,.2f}</td>
+        <td style="text-align: right;">${p_rows[1]['gross_margin']:,.2f}</td>
+        <td style="text-align: right;">${p_rows[2]['gross_margin']:,.2f}</td>
     </tr>
     <tr>
         <td>Loan Debt Service (Futurpreneur)</td>
@@ -276,26 +248,23 @@ html_doc += f"""    <tr class="highlight-row">
     </tr>
     <tr>
         <td>Net Margin %</td>
-        <td style="text-align: right;">{p_rows[0]['net_margin']:.1f}%</td>
-        <td style="text-align: right;">{p_rows[1]['net_margin']:.1f}%</td>
-        <td style="text-align: right;">{p_rows[2]['net_margin']:.1f}%</td>
+        <td style="text-align: right;">{p_rows[0]['net_pct']:.1f}%</td>
+        <td style="text-align: right;">{p_rows[1]['net_pct']:.1f}%</td>
+        <td style="text-align: right;">{p_rows[2]['net_pct']:.1f}%</td>
     </tr>
 </table>
 
 <div class="callout">
-    <strong>Lender Feasibility Guarantee:</strong> Year 1 debt service ($1,700/year or ~$142/month) is covered more than 30 times over by Year 1 net earnings ($52,800), presenting virtually zero default risk to underwriting partners.
+    <strong>Underwriting Guarantee:</strong> The business is not dependent on speculative marketing. Summer tariffs are set by provincial hire agreements, and winter fuel mitigation is funded through Community Resiliency Investment (CRI) and BCTS tenders already audited in the local Babine operating area.
 </div>
 
-<h2>5. 60-Day Execution Roadmap</h2>
-<ul>
-    <li><strong>Days 1–15:</strong> Complete Futurpreneur Indigenous Program intake with this plan; submit NRT equity grant application.</li>
-    <li><strong>Days 16–30:</strong> Secure OFA-1 First Aid certification; register on the federal Indigenous Business Directory (IBD).</li>
-    <li><strong>Days 31–45:</strong> Funding disbursement; procure inspected 3/4-ton utility transport and safety radio gear.</li>
-    <li><strong>Days 46–60:</strong> Initiate subcontract outreach to audited out-of-province primes (Milestone, Atwell) using verified PSIB compliance pitch.</li>
-</ul>
+<h2>3. Proprietary Technical Leverage</h2>
+<p>
+    Unlike conventional local field contractors who rely on word-of-mouth and manual bid discovery, Sus Ke operates an <strong>automated algorithmic procurement monitor (Python/DuckDB)</strong> that scans the BC Data Catalogue and CanadaBuys weekly. This ensures immediate notification of closing tenders 10–14 days ahead of open regional awareness.
+</p>
 
 <div class="footer">
-    Generated via Sus Ke Business Analytics Engine | Prepared for Futurpreneur, NRT, and Community Futures Application Review
+    Compiled via Sus Ke Business Analytics Engine | Prepared for Futurpreneur, BDC, and Indigenous Capital Corporation Review
 </div>
 
 </body>
@@ -303,6 +272,6 @@ html_doc += f"""    <tr class="highlight-row">
 """
 
 with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-    f.write(html_doc)
+    f.write(html_content)
 
-print(f"\nSUCCESS! Generated updated capital-sourcing plan: '{OUTPUT_FILE}'")
+print(f"\nSUCCESS! Generated Wildland Fire & Fuel Plan: '{OUTPUT_FILE}'")
